@@ -12,16 +12,28 @@ const SignUpPage = () => {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (userData) => {
         setIsSubmitting(true);
         setErrorMessage('');
 
-        try {
-            // Connect this to your Next.js API route or Server Action for user creation
-            console.log('Signup Data Submitted:', data);
+        // console.log(userData);
 
-            // Simulate network request
-            await new Promise((resolve) => setTimeout(resolve, 1500));
+        try {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(userData)
+            });
+
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.message || "Signup failed");
+            }
+
+            const data = await res.json();
+            console.log(data);
 
             // Redirect or handle success state here
         } catch (error) {
