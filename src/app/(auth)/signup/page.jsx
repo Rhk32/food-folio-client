@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import Image from 'next/image';
 import { User, Mail, Lock, Image as ImageIcon, MapPin, Globe, ArrowRight, Loader2 } from 'lucide-react';
+import { redirect } from 'next/navigation';
 
 const SignUpPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -15,6 +16,7 @@ const SignUpPage = () => {
     const onSubmit = async (userData) => {
         setIsSubmitting(true);
         setErrorMessage('');
+        let shouldRedirectTo = false;
 
         navigator.geolocation.getCurrentPosition(async (position) => {
             const latitude = position.coords.latitude;
@@ -38,18 +40,20 @@ const SignUpPage = () => {
                     throw new Error(errorData.message || "Signup failed");
                 }
 
-                const data = await res.json();
-                console.log(data);
-
-                // Redirect or handle success state here
+                // const data = await res.json();
+                // console.log(data);
+                shouldRedirectTo = true;
             } catch (error) {
-                setErrorMessage('Something went wrong during registration. Please try again.');
+                // console.log(error.message);
+                setErrorMessage(error.message);
             } finally {
                 setIsSubmitting(false);
+                
+                if (shouldRedirectTo) {
+                    redirect('/');
+                }
             }
         });
-
-        // console.log(userData);
     };
 
     return (
