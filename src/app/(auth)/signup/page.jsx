@@ -16,31 +16,40 @@ const SignUpPage = () => {
         setIsSubmitting(true);
         setErrorMessage('');
 
-        // console.log(userData);
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
 
-        try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(userData)
-            });
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        ...userData,
+                        latitude,
+                        longitude
+                    })
+                });
 
-            if (!res.ok) {
-                const errorData = await res.json();
-                throw new Error(errorData.message || "Signup failed");
+                if (!res.ok) {
+                    const errorData = await res.json();
+                    throw new Error(errorData.message || "Signup failed");
+                }
+
+                const data = await res.json();
+                console.log(data);
+
+                // Redirect or handle success state here
+            } catch (error) {
+                setErrorMessage('Something went wrong during registration. Please try again.');
+            } finally {
+                setIsSubmitting(false);
             }
+        });
 
-            const data = await res.json();
-            console.log(data);
-
-            // Redirect or handle success state here
-        } catch (error) {
-            setErrorMessage('Something went wrong during registration. Please try again.');
-        } finally {
-            setIsSubmitting(false);
-        }
+        // console.log(userData);
     };
 
     return (
