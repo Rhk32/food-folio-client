@@ -1,9 +1,9 @@
-import Image from 'next/image';
 import React from 'react';
-import Logo from '../../public/foodFolioLogoCircular.png'
 
 const Home = async () => {
-
+	const health = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`);
+	const healthMessage = await health.json();
+	console.log(healthMessage);
 	return (
 		<></>
 	);

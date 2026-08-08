@@ -19,7 +19,8 @@ export default function Footer() {
                                 <Image
                                     src="/foodFolioLogoCircular.png"
                                     alt="Food Folio Logo"
-                                    fill
+                                    width={1000}
+                                    height={1000}
                                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                                 />
                             </div>
@@ -35,10 +36,10 @@ export default function Footer() {
                             <Link href="https://www.instagram.com/rrr_ki_i/" className="w-9 h-9 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-orange-600 hover:bg-orange-100 transition-colors" aria-label="Instagram">
                                 <FaInstagram className="w-4 h-4" />
                             </Link>
-                            <Link href="#" className="w-9 h-9 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-orange-600 hover:bg-orange-100 transition-colors" aria-label="Twitter">
+                            <Link href="/not-yet" className="w-9 h-9 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-orange-600 hover:bg-orange-100 transition-colors" aria-label="Twitter">
                                 <FaTwitter className="w-4 h-4" />
                             </Link>
-                            <Link href="#" className="w-9 h-9 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-orange-600 hover:bg-orange-100 transition-colors" aria-label="Facebook">
+                            <Link href="/not-yet" className="w-9 h-9 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-orange-600 hover:bg-orange-100 transition-colors" aria-label="Facebook">
                                 <FaFacebook className="w-4 h-4" />
                             </Link>
                         </div>
