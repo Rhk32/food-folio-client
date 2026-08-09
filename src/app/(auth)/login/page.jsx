@@ -5,10 +5,11 @@ import { useForm } from 'react-hook-form';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
 const LoginPage = () => {
+    const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -17,7 +18,6 @@ const LoginPage = () => {
     const onSubmit = async (data) => {
         setIsSubmitting(true);
         setErrorMessage('');
-        let redirectTo = false;
 
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
@@ -37,19 +37,15 @@ const LoginPage = () => {
             // console.log(responseData.token);
 
             Cookies.set('token', responseData.token, {
-                expires: 1
+                expires: 7
             });
 
-            // console.log(Cookies.get('token'));
-
-            redirectTo = true;
+            router.replace('/');
+            router.refresh();
         } catch (error) {
             setErrorMessage(error.message);
         } finally {
             setIsSubmitting(false);
-            if (redirectTo) {
-                redirect('/');
-            }
         }
     };
 
