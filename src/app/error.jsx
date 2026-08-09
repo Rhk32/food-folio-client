@@ -7,7 +7,7 @@ import Link from 'next/link';
 export default function Error({ error, reset }) {
     useEffect(() => {
         // Log the error to an error reporting service if needed
-        console.error(error);
+        // console.error(error);
     }, [error]);
 
     return (

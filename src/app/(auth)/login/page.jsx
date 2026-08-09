@@ -19,16 +19,22 @@ const LoginPage = () => {
         let redirectTo = false;
 
         try {
-            // Connect this to your Next.js API route or authentication action (e.g., Supabase Auth / NextAuth)
-            console.log('Login Data Submitted:', data);
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
 
-            // Simulate network request
-            await new Promise((resolve) => setTimeout(resolve, 1500));
+            if (!res.ok) {
+                const errorData = await res.json();
+                throw new Error(errorData.message || "Login failed");
+            }
 
-            // Redirect or handle successful login here
             redirectTo = true;
         } catch (error) {
-            setErrorMessage('Invalid email or password. Please try again.');
+            setErrorMessage(error.message);
         } finally {
             setIsSubmitting(false);
             if (redirectTo) {
