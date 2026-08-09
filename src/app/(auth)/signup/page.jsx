@@ -50,7 +50,7 @@ const SignUpPage = () => {
                 setIsSubmitting(false);
                 
                 if (shouldRedirectTo) {
-                    redirect('/');
+                    redirect('/login');
                 }
             }
         });

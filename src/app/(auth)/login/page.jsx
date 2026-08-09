@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
 import { redirect } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 const LoginPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,6 +32,15 @@ const LoginPage = () => {
                 const errorData = await res.json();
                 throw new Error(errorData.message || "Login failed");
             }
+
+            const responseData = await res.json();
+            // console.log(responseData.token);
+
+            Cookies.set('token', responseData.token, {
+                expires: 1
+            });
+
+            // console.log(Cookies.get('token'));
 
             redirectTo = true;
         } catch (error) {
