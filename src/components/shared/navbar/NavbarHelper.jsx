@@ -3,9 +3,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Rss, User, Search, LayoutDashboard, LogIn } from 'lucide-react';
+import { Menu, X, Rss, User, Search, LayoutDashboard, LogIn, LogOut } from 'lucide-react';
+import { redirect } from 'next/navigation';
+import { logOut } from '@/actions/authActions';
 
-export default function NavbarHelper({ user }) {
+export default function NavbarHelper({ user, cookieStore }) {
     const [isOpen, setIsOpen] = useState(false);
     const isLoggedIn = Boolean(user);
     const displayName = user?.name || user?.email || 'Foodie';
@@ -19,6 +21,11 @@ export default function NavbarHelper({ user }) {
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
+    };
+
+    const handleLogout = async () => {
+        await logOut();
+        redirect('/');
     };
 
     return (
@@ -90,6 +97,13 @@ export default function NavbarHelper({ user }) {
                                         {initials}
                                     </div>
                                 </Link>
+                                <button
+                                    onClick={handleLogout}
+                                    title="Log Out"
+                                    className="p-2 rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors ml-1"
+                                >
+                                    <LogOut className="w-5 h-5" />
+                                </button>
                             </div>
                         ) : (
                             <div className="flex items-center gap-3">
@@ -170,6 +184,16 @@ export default function NavbarHelper({ user }) {
                             >
                                 {initials}
                             </Link>
+                            <button
+                                onClick={() => {
+                                    setIsOpen(false);
+                                    handleLogout();
+                                }}
+                                className="flex items-center gap-1.5 text-xs text-red-600 hover:text-red-700 font-medium px-3 py-2 rounded-lg bg-red-50 hover:bg-red-100 transition-colors"
+                            >
+                                <LogOut className="w-4 h-4" />
+                                Log Out
+                            </button>
                         </div>
                     ) : (
                         <div className="pt-4 mt-2 border-t border-orange-100 flex items-center justify-between px-2">
