@@ -88,7 +88,7 @@ Trending on Food Folio
 ┌──────────┐ ┌──────────┐ ┌──────────┐
 │  image   │ │  image   │ │  image   │
 │ Kacchi   │ │ Burger   │ │ Ramen    │
-│ ★ 4.8    │ │ ★ 4.7    │ │ ★ 4.9    │
+│ ★ 4.8    │ │ ★ 4.7   │ │ ★ 4.9   │
 └──────────┘ └──────────┘ └──────────┘
 ```
 
@@ -179,7 +179,7 @@ For logged-in users, you could instead show:
 │ HERO                                    │
 │ Discover food. Share your favorites.    │
 │ [Explore] [Create Folio]                │
-│                         🍛 BIG IMAGE     │
+│                         🍛 BIG IMAGE    │
 │                                         │
 ├─────────────────────────────────────────┤
 │                                         │
