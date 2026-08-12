@@ -69,11 +69,11 @@ export default function NavbarHelper({ user, cookieStore }) {
                             Search
                         </Link>
                         <Link
-                            href="/dashboard"
+                            href="/restaurant/my"
                             className="flex items-center gap-1.5 px-3 py-2 rounded-full text-gray-700 hover:text-orange-600 hover:bg-orange-100/50 font-medium transition-colors text-sm"
                         >
                             <LayoutDashboard className="w-4 h-4 text-orange-500" />
-                            Dashboard
+                            My Restaurants
                         </Link>
                         <Link
                             href="/profile"
@@ -158,12 +158,12 @@ export default function NavbarHelper({ user, cookieStore }) {
                         Search
                     </Link>
                     <Link
-                        href="/dashboard"
+                        href="/restaurant/my"
                         onClick={() => setIsOpen(false)}
                         className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-700 hover:bg-orange-50 hover:text-orange-600 font-medium transition-colors"
                     >
                         <LayoutDashboard className="w-5 h-5 text-orange-500" />
-                        Dashboard
+                        My Restaurants
                     </Link>
                     <Link
                         href="/profile"
@@ -197,7 +197,6 @@ export default function NavbarHelper({ user, cookieStore }) {
                         </div>
                     ) : (
                         <div className="pt-4 mt-2 border-t border-orange-100 flex items-center justify-between px-2">
-                            <span className="text-sm text-gray-500 font-medium">Session Area</span>
                             <Link
                                 href="/signup"
                                 onClick={() => setIsOpen(false)}
