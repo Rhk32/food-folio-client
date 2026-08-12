@@ -1,5 +1,6 @@
 'use client';
 
+import { getToken } from '@/actions/authActions';
 import { ArrowLeft, ArrowRight, FileText, ImageIcon, Loader2, Utensils } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
@@ -22,16 +23,42 @@ const RestaurantAddPage = () => {
         setSuccessMessage(false);
 
         try {
-            // Console log data as requested for now
-            console.log('New Restaurant Data Submitted:', data);
+            const token = await getToken();
 
-            // Simulate submission network latency
-            await new Promise((resolve) => setTimeout(resolve, 1000));
+            if (!token) {
+                throw new Error('You must be logged in to create a restaurant.');
+            }
+
+            const res = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/create`,
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({
+                        name: data.name,
+                        description: data.description,
+                        logo_url: data.logo_url,
+                    }),
+                }
+            );
+
+            const result = await res.json();
+
+            if (!res.ok) {
+                throw new Error(
+                    result.message || 'Failed to create restaurant.'
+                );
+            }
+
+            // console.log(result.restaurant);
 
             setSuccessMessage(true);
-            reset(); // Clear form fields after successful logging
+            reset();
         } catch (error) {
-            console.error('Error submitting form:', error);
+            console.error('Error submitting restaurant:', error);
         } finally {
             setIsSubmitting(false);
         }
