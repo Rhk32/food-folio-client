@@ -29,18 +29,25 @@ export default function NavbarHelper({ user }) {
     };
 
     const getNavLinkClass = (path) => {
-        const isActive = pathname === path;
+        // If the path is profile, check if the current pathname starts with '/profile'
+        const isActive = path === '/profile'
+            ? pathname.startsWith('/profile')
+            : pathname === path;
+
         return `flex items-center gap-1.5 px-3 py-2 rounded-full font-medium transition-colors text-sm ${isActive
-                ? 'bg-orange-100/60 text-amber-900 border border-orange-200/40 shadow-2xs'
-                : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50/60'
+            ? 'bg-orange-100/60 text-amber-900 border border-orange-200/40 shadow-2xs'
+            : 'text-gray-600 hover:text-orange-600 hover:bg-orange-50/60'
             }`;
     };
 
     const getMobileLinkClass = (path) => {
-        const isActive = pathname === path;
+        const isActive = path === '/profile'
+            ? pathname.startsWith('/profile')
+            : pathname === path;
+
         return `flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive
-                ? 'bg-orange-50 text-amber-900 border border-orange-100/80'
-                : 'text-gray-600 hover:bg-orange-50/50 hover:text-orange-600'
+            ? 'bg-orange-50 text-amber-900 border border-orange-100/80'
+            : 'text-gray-600 hover:bg-orange-50/50 hover:text-orange-600'
             }`;
     };
 
@@ -78,14 +85,20 @@ export default function NavbarHelper({ user }) {
                             <Search className="w-4 h-4 text-orange-500" />
                             Search
                         </Link>
-                        <Link href="/restaurant/my" className={getNavLinkClass('/restaurant/my')}>
-                            <LayoutDashboard className="w-4 h-4 text-orange-500" />
-                            My Restaurants
-                        </Link>
-                        <Link href={`/profile/${user?.id}`} className={getNavLinkClass('/profile')}>
-                            <User className="w-4 h-4 text-orange-500" />
-                            Profile
-                        </Link>
+
+                        {/* Show these only when logged in */}
+                        {isLoggedIn && (
+                            <>
+                                <Link href="/restaurant/my" className={getNavLinkClass('/restaurant/my')}>
+                                    <LayoutDashboard className="w-4 h-4 text-orange-500" />
+                                    My Restaurants
+                                </Link>
+                                <Link href={`/profile/${user?.id}`} className={getNavLinkClass('/profile')}>
+                                    <User className="w-4 h-4 text-orange-500" />
+                                    Profile
+                                </Link>
+                            </>
+                        )}
                     </div>
 
                     {/* 3. User Session on the Right (Desktop) */}
@@ -161,22 +174,28 @@ export default function NavbarHelper({ user }) {
                         <Search className="w-5 h-5 text-orange-500" />
                         Search
                     </Link>
-                    <Link
-                        href="/restaurant/my"
-                        onClick={() => setIsOpen(false)}
-                        className={getMobileLinkClass('/restaurant/my')}
-                    >
-                        <LayoutDashboard className="w-5 h-5 text-orange-500" />
-                        My Restaurants
-                    </Link>
-                    <Link
-                        href={`/profile/${user?.id}`}
-                        onClick={() => setIsOpen(false)}
-                        className={getMobileLinkClass('/profile')}
-                    >
-                        <User className="w-5 h-5 text-orange-500" />
-                        Profile
-                    </Link>
+
+                    {/* Show these only when logged in on mobile */}
+                    {isLoggedIn && (
+                        <>
+                            <Link
+                                href="/restaurant/my"
+                                onClick={() => setIsOpen(false)}
+                                className={getMobileLinkClass('/restaurant/my')}
+                            >
+                                <LayoutDashboard className="w-5 h-5 text-orange-500" />
+                                My Restaurants
+                            </Link>
+                            <Link
+                                href={`/profile/${user?.id}`}
+                                onClick={() => setIsOpen(false)}
+                                className={getMobileLinkClass('/profile')}
+                            >
+                                <User className="w-5 h-5 text-orange-500" />
+                                Profile
+                            </Link>
+                        </>
+                    )}
 
                     {isLoggedIn ? (
                         <div className="pt-4 mt-2 border-t border-orange-100 flex items-center justify-between px-2">
