@@ -1,4 +1,4 @@
-import { Lock, User } from "lucide-react";
+import { LayoutDashboard, Lock, User } from "lucide-react";
 
 export const getSidebarNavLinks = () => {
     const navItems = [
@@ -11,6 +11,17 @@ export const getSidebarNavLinks = () => {
             name: 'Password',
             href: '/profile/settings/password',
             icon: Lock,
+        },
+    ];
+    return navItems;
+};
+
+export const getAdminSidebarLinks = () => {
+    const navItems = [
+        {
+            name: 'Dashboard',
+            href: '/admin/dashboard',
+            icon: LayoutDashboard,
         },
     ];
     return navItems;

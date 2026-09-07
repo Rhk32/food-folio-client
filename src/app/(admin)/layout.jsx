@@ -1,4 +1,5 @@
 import { getCurrentUser } from '@/api/userActions';
+import AdminDashboardSidebar from '@/components/admin/AdminDashboardSidebar';
 import { redirect } from 'next/navigation';
 import React from 'react';
 
@@ -8,9 +9,12 @@ const AdminLayout = async ({ children }) => {
         redirect('/unauthorized');
     }
     return (
-        <>
-            {children}
-        </>
+        <div className='flex'>
+            <AdminDashboardSidebar></AdminDashboardSidebar>
+            <div className='w-full'>
+                {children}
+            </div>
+        </div>
     );
 };
 
