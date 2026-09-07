@@ -1,4 +1,4 @@
-import { LayoutDashboard, Lock, User } from "lucide-react";
+import { LayoutDashboard, Lock, Store, User } from "lucide-react";
 
 export const getSidebarNavLinks = () => {
     const navItems = [
@@ -21,8 +21,13 @@ export const getAdminSidebarLinks = () => {
         {
             name: 'Dashboard',
             href: '/admin/dashboard',
-            icon: LayoutDashboard,
+            icon: LayoutDashboard
         },
+        {
+            name: 'Unapproved Restaurants',
+            href: '/admin/unapproved-restaurants',
+            icon: Store
+        }
     ];
     return navItems;
 };

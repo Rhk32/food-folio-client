@@ -13,7 +13,7 @@ const SettingsSideBar = () => {
         <>
             {/* Desktop Sidebar */}
             <aside className="hidden lg:block w-72 shrink-0">
-                <div className="bg-[#FDFBF7] border border-orange-100 shadow-sm p-4 space-y-2 lg:min-h-screen flex flex-col rounded-2xl">
+                <div className="bg-[#FDFBF7] border border-orange-100 shadow-sm p-4 space-y-2 lg:h-full flex flex-col rounded-2xl">
                     <div className="px-3 py-2 mb-1">
                         <h2 className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                             Settings Menu

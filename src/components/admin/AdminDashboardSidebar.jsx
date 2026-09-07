@@ -13,7 +13,7 @@ const AdminDashboardSidebar = () => {
         <>
             {/* Desktop Sidebar */}
             <aside className="hidden lg:block w-64 shrink-0">
-                <div className="bg-white min-h-screen rounded-2xl border border-orange-100 shadow-sm p-4 space-y-1">
+                <div className="bg-white h-full rounded-2xl border border-orange-100 shadow-sm p-4 space-y-1">
                     <div className="px-3 py-2 text-xs font-bold text-gray-400 uppercase tracking-wider">
                         Admin Navigation
                     </div>

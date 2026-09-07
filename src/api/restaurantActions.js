@@ -72,3 +72,37 @@ export const createRestaurant = async (data) => {
         return { success: false, message: error.message };
     }
 };
+
+export const getUnapprovedRestaurants = async () => {
+    const token = await getToken();
+
+    if (!token) {
+        return [];
+    }
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/unapproved`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            cache: 'no-store',
+        }
+        );
+
+        // console.log('Response status:', res.status);
+
+        const data = await res.json();
+
+        // console.log('Response data:', data);
+
+        if (!res.ok) {
+            console.error('Failed request:', data);
+            return null;
+        }
+        
+        return data.restaurants ?? [];
+    } catch (error) {
+        console.error('Failed to fetch unapproved restaurants:', error);
+        return null;
+    }
+};
