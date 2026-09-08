@@ -43,12 +43,17 @@ useEffect(() => {
     useEffect(() => {
         if (location.isReady) {
             const fetchFeedData = async () => {
-                setIsLoading(true);
+                if (radius === 10) setIsLoading(true);
                 
                 const data = await getFeed(location.lat, location.lng, location.city, location.country, radius);
                 
-                setReviews(data);
-                setIsLoading(false);
+                if (data.length < 40 && radius < 50) {
+                    console.log(`Found ${data.length} spots in ${radius}km. Expanding radius to ${radius + 5}km...`);
+                    setRadius(prevRadius => prevRadius + 5); 
+                } else {
+                    setReviews(data);
+                    setIsLoading(false);
+                }
             };
             
             fetchFeedData();
@@ -59,7 +64,10 @@ useEffect(() => {
     if (isLoading) {
         return (
             <div className="flex justify-center items-center min-h-[calc(100vh-80px)]">
-                <Loader2 className="w-10 h-10 animate-spin text-orange-500" />
+                <div className="flex flex-col items-center gap-4">
+                    <Loader2 className="w-10 h-10 animate-spin text-orange-500" />
+                    <p className="text-sm text-gray-500 font-medium">Scouting best food spots around you...</p>
+                </div>
             </div>
         );
     }
@@ -74,21 +82,6 @@ useEffect(() => {
                     Food Spots Around You
                 </h1>
             </div>
-
-            <div className="mb-8 bg-white p-5 rounded-2xl border border-orange-100 shadow-sm">
-            <div className="flex justify-between items-center mb-2">
-                <label className="text-sm font-bold text-gray-700 uppercase tracking-wider">Search Radius</label>
-                <span className="text-sm font-semibold text-orange-600 bg-orange-50 px-3 py-1 rounded-full">{radius} km</span>
-            </div>
-                <input 
-                type="range" 
-                min="1" max="50" 
-                value={radius}
-                onChange={(e) => setRadius(e.target.value)}
-                className="w-full cursor-pointer accent-orange-500"
-                />
-            </div>
-
 
             {/* showing reviews in a loop using map */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
