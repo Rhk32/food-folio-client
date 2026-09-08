@@ -1,7 +1,7 @@
 import React from 'react';
 import { cookies } from 'next/headers';
 import NavbarHelper from './NavbarHelper';
-import { getCurrentUser } from '@/actions/userActions';
+import { getCurrentUser } from '@/api/userActions';
 
 const Navbar = async () => {
     const user = await getCurrentUser();

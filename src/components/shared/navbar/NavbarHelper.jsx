@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X, Rss, User, Search, LayoutDashboard, LogIn, LogOut } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { logOut } from '@/actions/authActions';
+import { logOut } from '@/api/authActions';
 
 export default function NavbarHelper({ user }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -107,7 +107,7 @@ export default function NavbarHelper({ user }) {
                             <div className="flex items-center gap-3">
                                 <span className="text-sm font-medium text-gray-700">Hello, {displayName}</span>
                                 <Link
-                                    href="/profile"
+                                    href={`/profile/${user.id}`}
                                     className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-orange-400 hover:ring-2 hover:ring-orange-300 transition-all"
                                 >
                                     <div className="w-full h-full bg-orange-200 flex items-center justify-center text-orange-700 font-bold">
@@ -202,7 +202,7 @@ export default function NavbarHelper({ user }) {
                             <span className="text-sm text-gray-700 font-medium">Hello, {displayName}</span>
                             <div className="flex items-center gap-2">
                                 <Link
-                                    href="/profile"
+                                    href={`/profile/${user?.id}`}
                                     onClick={() => setIsOpen(false)}
                                     className="w-10 h-10 rounded-full bg-orange-200 flex items-center justify-center text-orange-700 font-bold border-2 border-orange-400"
                                 >
@@ -222,7 +222,6 @@ export default function NavbarHelper({ user }) {
                         </div>
                     ) : (
                         <div className="pt-4 mt-2 border-t border-orange-100 flex items-center justify-between px-2">
-                            <span className="text-sm text-gray-500 font-medium">Session Area</span>
                             <Link
                                 href="/signup"
                                 onClick={() => setIsOpen(false)}

@@ -1,6 +1,6 @@
 import React from 'react';
 import RestaurantAddPageHelper from './RestaurantAddPageHelper';
-import { getCurrentUser } from '@/actions/userActions';
+import { getCurrentUser } from '@/api/userActions';
 import { redirect } from 'next/navigation';
 
 const RestaurantAddPage = async () => {

@@ -1,6 +1,6 @@
 'use client';
 
-import { createRestaurant } from '@/actions/restaurantActions';
+import { createRestaurant } from '@/api/restaurantActions';
 import { ArrowLeft, ArrowRight, FileText, ImageIcon, Loader2, Utensils } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
