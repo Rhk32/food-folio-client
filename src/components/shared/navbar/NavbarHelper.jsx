@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Rss, User, Search, LayoutDashboard, LogIn, LogOut } from 'lucide-react';
+import { Menu, X, Rss, User, Search, LayoutDashboard, LogIn, LogOut, ShieldAlert } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { logOut } from '@/api/authActions';
 
@@ -11,6 +11,7 @@ export default function NavbarHelper({ user }) {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
     const isLoggedIn = Boolean(user);
+    const isAdmin = user?.role === 'admin'; // Check if user is admin
     const displayName = user?.name || user?.email || 'Foodie';
     const initials = displayName
         .split(' ')
@@ -29,10 +30,11 @@ export default function NavbarHelper({ user }) {
     };
 
     const getNavLinkClass = (path) => {
-        // If the path is profile, check if the current pathname starts with '/profile'
         const isActive = path === '/profile'
             ? pathname.startsWith('/profile')
-            : pathname === path;
+            : path === '/admin'
+                ? pathname.startsWith('/admin')
+                : pathname === path;
 
         return `flex items-center gap-1.5 px-3 py-2 rounded-full font-medium transition-colors text-sm ${isActive
             ? 'bg-orange-100/60 text-amber-900 border border-orange-200/40 shadow-2xs'
@@ -43,7 +45,9 @@ export default function NavbarHelper({ user }) {
     const getMobileLinkClass = (path) => {
         const isActive = path === '/profile'
             ? pathname.startsWith('/profile')
-            : pathname === path;
+            : path === '/admin'
+                ? pathname.startsWith('/admin')
+                : pathname === path;
 
         return `flex items-center gap-3 px-3 py-2.5 rounded-lg font-medium transition-colors ${isActive
             ? 'bg-orange-50 text-amber-900 border border-orange-100/80'
@@ -86,6 +90,14 @@ export default function NavbarHelper({ user }) {
                             Search
                         </Link>
 
+                        {/* Show Admin Dashboard link if user is admin */}
+                        {isLoggedIn && isAdmin && (
+                            <Link href="/admin/dashboard" className={getNavLinkClass('/admin')}>
+                                <ShieldAlert className="w-4 h-4 text-orange-500" />
+                                Dashboard
+                            </Link>
+                        )}
+
                         {/* Show these only when logged in */}
                         {isLoggedIn && (
                             <>
@@ -117,7 +129,7 @@ export default function NavbarHelper({ user }) {
                                 <button
                                     onClick={handleLogout}
                                     title="Log Out"
-                                    className="p-2 rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors ml-1"
+                                    className="p-2 rounded-full text-gray-500 hover:text-red-600 hover:bg-red-50 transition-colors ml-1 cursor-pointer"
                                 >
                                     <LogOut className="w-5 h-5" />
                                 </button>
@@ -145,7 +157,7 @@ export default function NavbarHelper({ user }) {
                     <div className="flex md:hidden items-center">
                         <button
                             onClick={toggleMenu}
-                            className="p-2 rounded-lg text-gray-700 hover:text-orange-600 hover:bg-orange-50 focus:outline-none transition-colors"
+                            className="p-2 rounded-lg text-gray-700 hover:text-orange-600 hover:bg-orange-50 focus:outline-none transition-colors cursor-pointer"
                             aria-label="Toggle menu"
                         >
                             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -174,6 +186,18 @@ export default function NavbarHelper({ user }) {
                         <Search className="w-5 h-5 text-orange-500" />
                         Search
                     </Link>
+
+                    {/* Mobile Admin Dashboard Link */}
+                    {isLoggedIn && isAdmin && (
+                        <Link
+                            href="/admin/dashboard"
+                            onClick={() => setIsOpen(false)}
+                            className={getMobileLinkClass('/admin')}
+                        >
+                            <ShieldAlert className="w-5 h-5 text-orange-500" />
+                            Dashboard
+                        </Link>
+                    )}
 
                     {/* Show these only when logged in on mobile */}
                     {isLoggedIn && (
@@ -213,7 +237,7 @@ export default function NavbarHelper({ user }) {
                                         setIsOpen(false);
                                         handleLogout();
                                     }}
-                                    className="flex items-center gap-1.5 text-xs text-red-600 hover:text-red-700 font-medium px-3 py-2 rounded-lg bg-red-50 hover:bg-red-100 transition-colors"
+                                    className="flex items-center gap-1.5 text-xs text-red-600 hover:text-red-700 font-medium px-3 py-2 rounded-lg bg-red-50 hover:bg-red-100 transition-colors cursor-pointer"
                                 >
                                     <LogOut className="w-4 h-4" />
                                     Log Out
