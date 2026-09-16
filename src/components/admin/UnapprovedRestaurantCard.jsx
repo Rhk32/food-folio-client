@@ -1,18 +1,33 @@
 'use client';
 
+import { updateRestaurantApproval } from '@/api/adminActions';
 import { Calendar, Check, X } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const UnapprovedRestaurantCard = ({ restaurant }) => {
+    const router = useRouter();
     const { id, name, logo_url, description, created_at } = restaurant;
 
-    const handleApprove = () => {
-        console.log('Approve Restaurant ID:', id);
+    const handleApprove = async () => {
+        try {
+            await updateRestaurantApproval(id, 'approved');
+
+            router.refresh();
+        } catch (error) {
+            console.error('Failed to approve restaurant:', error);
+        }
     };
 
-    const handleReject = () => {
-        console.log('Reject Restaurant ID:', id);
+    const handleReject = async () => {
+        try {
+            await updateRestaurantApproval(id, 'rejected');
+
+            router.refresh();
+        } catch (error) {
+            console.error('Failed to reject restaurant:', error);
+        }
     };
 
     // Format the date nicely
