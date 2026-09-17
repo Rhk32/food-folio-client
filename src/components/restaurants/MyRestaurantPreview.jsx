@@ -78,7 +78,7 @@ const MyRestaurantPreview = ({ restaurant }) => {
                     Added: {new Date(restaurant.created_at).toLocaleDateString()}
                 </span>
                 <Link
-                    href={`/restaurants/${restaurant.id}`}
+                    href={`/manage/${restaurant.id}`}
                     className="text-xs font-semibold text-orange-600 hover:text-orange-700 hover:underline"
                 >
                     Manage Spot &rarr;
