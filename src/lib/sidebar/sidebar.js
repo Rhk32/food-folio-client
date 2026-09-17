@@ -1,4 +1,4 @@
-import { LayoutDashboard, Lock, Store, User } from "lucide-react";
+import { GitBranch, LayoutDashboard, Lock, MessageSquareQuote, Store, User, UtensilsCrossed } from "lucide-react";
 
 export const getSidebarNavLinks = () => {
     const navItems = [
@@ -28,6 +28,28 @@ export const getAdminSidebarLinks = () => {
             href: '/admin/unapproved-restaurants',
             icon: Store
         }
+    ];
+    return navItems;
+};
+
+export const getRestaurantManagerSidebarItems = (restaurantId) => {
+    const navItems = [
+        {
+            name: 'Branches',
+            href: `/manage/${restaurantId}`,
+            icon: GitBranch,
+            exact: true, // Used to match exact root manage path
+        },
+        {
+            name: 'Pending Reviews',
+            href: `/manage/${restaurantId}/reviews`,
+            icon: MessageSquareQuote,
+        },
+        {
+            name: 'Cuisines',
+            href: `/manage/${restaurantId}/cuisine`,
+            icon: UtensilsCrossed,
+        },
     ];
     return navItems;
 };
