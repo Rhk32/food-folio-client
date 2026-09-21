@@ -5,13 +5,13 @@ import React from 'react';
 const RestaurantManagerLayoutHelper = async ({ children, params }) => {
     const { restaurantId } = await params;
     // console.log(restaurantId);
-    const restaurant = await getRestaurantByRestaurantId(restaurantId);
-    // console.log(restaurant);
     return (
-        <>
+        <div className='flex'>
             <RestaurantManagerSidebar restaurantId={restaurantId}></RestaurantManagerSidebar>
-            {children}
-        </>
+            <div className='w-full'>
+                {children}
+            </div>
+        </div>
     );
 };
 
