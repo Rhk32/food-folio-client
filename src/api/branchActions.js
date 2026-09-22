@@ -21,7 +21,7 @@ export const getBranchesByRestaurantId = async (restaurantId) => {
         );
 
         if (!res.ok) {
-            console.error(
+            console.log(
                 'Failed to fetch branches:',
                 res.status,
                 res.statusText
