@@ -5,12 +5,13 @@ import { Loader2, MapPin } from 'lucide-react';
 import { getFeed } from '@/actions/feedActions';
 import { getCurrentUser } from '@/actions/userActions';
 import MyRestaurantPreview from '@/components/restaurants/MyRestaurantPreview';
+import SearchBar from '@/components/ui/SearchBar';
 
 export default function FeedPage() {
     const [reviews, setReviews] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [radius, setRadius] = useState(10);           // default 10 km
-
+    const [keyword, setKeyword] = useState("");
     const [location, setLocation] = useState({ lat: null, lng: null, city: null, country: null, isReady: false });
 
 useEffect(() => {
@@ -45,7 +46,7 @@ useEffect(() => {
             const fetchFeedData = async () => {
                 if (radius === 10) setIsLoading(true);
                 
-                const data = await getFeed(location.lat, location.lng, location.city, location.country, radius);
+                const data = await getFeed(location.lat, location.lng, location.city, location.country, radius, keyword);
                 
                 if (data.length < 40 && radius < 50) {
                     console.log(`Found ${data.length} spots in ${radius}km. Expanding radius to ${radius + 5}km...`);
@@ -58,7 +59,13 @@ useEffect(() => {
             
             fetchFeedData();
         }
-    }, [location, radius]);  //this is dependency array
+    }, [location, radius, keyword]);  //this is dependency array
+
+    const handleSearchSubmit = (newKeyword) => {
+        setKeyword(newKeyword);
+        setRadius(10); // after search radius again will start from 10km
+        setReviews([]); // previous result will vanish from screen
+    };
 
     // loading animation
     if (isLoading) {
@@ -83,6 +90,8 @@ useEffect(() => {
                 </h1>
             </div>
 
+            <SearchBar onSearch={handleSearchSubmit} />   
+            
             {/* showing reviews in a loop using map */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {reviews.length > 0 ? (
