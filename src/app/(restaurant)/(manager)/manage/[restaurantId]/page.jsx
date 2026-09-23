@@ -68,15 +68,15 @@ const ManagerRestaurantDetailsPageAndEdit = async ({ params }) => {
                                         <div className="space-y-2">
                                             <div className="flex items-start justify-between gap-2">
                                                 <h3 className="font-bold text-gray-900 text-base line-clamp-1">
-                                                    {branch.name || 'Unnamed Branch'}
+                                                    {branch.branch_name || 'Unnamed Branch'}
                                                 </h3>
                                                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-orange-50 text-orange-700 border border-orange-200/60 shrink-0">
-                                                    {branch.status || 'Active'}
+                                                    {branch.city || 'Active'}
                                                 </span>
                                             </div>
                                             <p className="text-xs text-gray-500 flex items-center gap-1.5 line-clamp-1">
                                                 <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
-                                                <span>{branch.address || 'No address specified'}</span>
+                                                <span>{branch.address ? `${branch.address}, ${branch.city}` : 'No address specified'}</span>
                                             </p>
                                         </div>
 
