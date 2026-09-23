@@ -37,3 +37,50 @@ export const getBranchesByRestaurantId = async (restaurantId) => {
         return [];
     }
 };
+
+export const createBranch = async (branchData) => {
+    const token = await getToken();
+
+    if (!token) {
+        return {
+            success: false,
+            message: 'Authentication required',
+        };
+    }
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/branch/add`,
+            {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(branchData),
+                cache: 'no-store',
+            }
+        );
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            return {
+                success: false,
+                message: data.message || 'Failed to create branch',
+            };
+        }
+
+        return {
+            success: true,
+            message: data.message || 'Branch created successfully',
+            branch: data.branch,
+        };
+    } catch (error) {
+        console.error('Error creating branch:', error);
+
+        return {
+            success: false,
+            message: 'Something went wrong while creating the branch',
+        };
+    }
+};
