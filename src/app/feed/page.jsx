@@ -5,7 +5,7 @@ import { Loader2, MapPin } from 'lucide-react';
 import { getFeed } from '@/actions/feedActions';
 import { getCurrentUser } from '@/actions/userActions';
 import MyRestaurantPreview from '@/components/restaurants/MyRestaurantPreview';
-import SearchBar from '@/components/ui/SearchBar';
+import SearchBar from '@/components/search/SearchBar';
 
 export default function FeedPage() {
     const [reviews, setReviews] = useState([]);
@@ -81,16 +81,18 @@ useEffect(() => {
 
     // design after data coming
     return (
-        <div className="max-w-3xl mx-auto px-4 py-8">
+        <div className="max-w-2xl mx-auto px-4 py-8 min-h-[85vh]">
             {/* Header of page */}
-            <div className="flex items-center gap-2 mb-8 border-b border-orange-100 pb-4">
-                <MapPin className="w-6 h-6 text-orange-500" />
-                <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight">
-                    Food Spots Around You
-                </h1>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-6">
+                <div className="flex items-center gap-2 mb-4 pb-4 border-b border-gray-50">
+                    <MapPin className="w-6 h-6 text-orange-500" />
+                    <h1 className="text-xl font-extrabold text-gray-900 tracking-tight">
+                        Food Spots Around You
+                    </h1>
+                </div>
             </div>
 
-            <SearchBar onSearch={handleSearchSubmit} />   
+            <SearchBar onSearch={handleSearchSubmit} placeholder="Search to meet your appetite..."/>   
             
             {/* showing reviews in a loop using map */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -99,11 +101,13 @@ useEffect(() => {
                         <MyRestaurantPreview key={review.review_id} restaurant={review} />
                     ))
                 ) : (
-                    <p className="text-gray-500 text-center col-span-full py-10">
-                        {keyword 
-                            ? `No spots found for "${keyword}" within 50km.` 
-                            : "No food spots found within 50km yet. Be the first to add one!"}
-                    </p>
+                    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center">
+                        <p className="text-gray-500 text-lg">
+                            {keyword 
+                                ? `No spots found for "${keyword}" within 50km.` 
+                                : "No food spots found within 50km yet. Be the first to add one!"}
+                        </p>
+                    </div>
                 )}
             </div>
         </div>
