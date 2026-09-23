@@ -100,7 +100,9 @@ useEffect(() => {
                     ))
                 ) : (
                     <p className="text-gray-500 text-center col-span-full py-10">
-                        No food spots found in this area yet. Be the first to add one!
+                        {keyword 
+                            ? `No spots found for "${keyword}" within 50km.` 
+                            : "No food spots found within 50km yet. Be the first to add one!"}
                     </p>
                 )}
             </div>
