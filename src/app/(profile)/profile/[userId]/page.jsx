@@ -148,7 +148,6 @@ const UserProfile = async ({ params }) => {
                                 </Link>
                             ) : currentUser ? (
                                 <FollowButton
-                                    followerUserId={currentUser.id}
                                     toBeFollowedUserId={displayedUserProfile.id}
                                     // Pass initialIsFollowing if you have it precomputed from a database relation check
                                     initialIsFollowing={isFollowing}

@@ -2,21 +2,28 @@
 
 import React, { useState, useTransition } from 'react';
 import { UserPlus, UserCheck, Loader2 } from 'lucide-react';
+import { toggleFollow } from '@/api/followActions';
 
-const FollowButton = ({ followerUserId, toBeFollowedUserId, initialIsFollowing = false }) => {
+const FollowButton = ({ toBeFollowedUserId, initialIsFollowing = false }) => {
     const [isFollowing, setIsFollowing] = useState(initialIsFollowing);
     const [isPending, startTransition] = useTransition();
 
     const handleFollowToggle = async () => {
         startTransition(async () => {
             try {
-                // TODO: Replace with your actual server action or API call
-                // e.g., await toggleFollowAction(followerUserId, toBeFollowedUserId);
+                const result = await toggleFollow(toBeFollowedUserId);
 
-                // Optimistic UI update
-                setIsFollowing((prev) => !prev);
+                if (!result.success) {
+                    console.error(result.message);
+                    return;
+                }
+
+                setIsFollowing(result.isFollowing);
             } catch (error) {
-                console.error('Failed to update follow status:', error);
+                console.error(
+                    'Failed to update follow status:',
+                    error
+                );
             }
         });
     };
@@ -27,8 +34,8 @@ const FollowButton = ({ followerUserId, toBeFollowedUserId, initialIsFollowing =
             onClick={handleFollowToggle}
             disabled={isPending}
             className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold transition-all shadow-2xs cursor-pointer disabled:opacity-70 ${isFollowing
-                    ? 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 group'
-                    : 'bg-linear-to-r from-red-500 to-orange-500 text-white hover:opacity-95 shadow-sm'
+                ? 'bg-gray-100 text-gray-700 border border-gray-200 hover:bg-red-50 hover:text-red-600 hover:border-red-200 group'
+                : 'bg-linear-to-r from-red-500 to-orange-500 text-white hover:opacity-95 shadow-sm'
                 }`}
         >
             {isPending ? (
