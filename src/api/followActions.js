@@ -90,3 +90,39 @@ export const toggleFollow = async (followingId) => {
         };
     }
 };
+
+export const getFollowerCountByUserId = async (userId) => {
+    if (!userId) {
+        return 0;
+    }
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/follow/follower-count/${userId}`,
+            {
+                method: 'GET',
+                cache: 'no-store',
+            }
+        );
+
+        if (!res.ok) {
+            console.error(
+                'Failed to fetch follower count:',
+                res.status,
+                res.statusText
+            );
+
+            return 0;
+        }
+
+        const data = await res.json();
+
+        return data.followerCount ?? 0;
+    } catch (error) {
+        console.error(
+            'Error fetching follower count:',
+            error
+        );
+
+        return 0;
+    }
+};
