@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { BadgeCheck, Calendar, Mail, MapPin, Settings, ShieldAlert, User } from 'lucide-react';
 import FollowButton from '@/components/profile/FollowButton';
+import { isCurrentUserFollowingDisplayedUser } from '@/api/followActions';
 
 const formatJoinedDate = (date) => {
     if (!date) {
@@ -72,6 +73,8 @@ const UserProfile = async ({ params }) => {
     const locationString = locationParts.join(', ');
     const joinedDate = formatJoinedDate(displayedUserProfile.created_at);
     const joinedSummary = joinedDate === 'Not shared yet' ? 'Joined date not shared' : `Joined ${joinedDate}`;
+
+    const isFollowing = await isCurrentUserFollowingDisplayedUser(currentUser.id, displayedUserProfile.id);
 
     return (
         <main className="min-h-[calc(100vh-80px)] bg-[#FDFBF7]">
@@ -148,7 +151,7 @@ const UserProfile = async ({ params }) => {
                                     followerUserId={currentUser.id}
                                     toBeFollowedUserId={displayedUserProfile.id}
                                     // Pass initialIsFollowing if you have it precomputed from a database relation check
-                                    initialIsFollowing={false}
+                                    initialIsFollowing={isFollowing}
                                 />
                             ) : null}
                         </div>
