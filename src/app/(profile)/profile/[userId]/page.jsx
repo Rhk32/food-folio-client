@@ -3,6 +3,7 @@ import { getCurrentUser, getUserByUserId } from '@/api/userActions';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BadgeCheck, Calendar, Mail, MapPin, Settings, ShieldAlert, User } from 'lucide-react';
+import FollowButton from '@/components/profile/FollowButton';
 
 const formatJoinedDate = (date) => {
     if (!date) {
@@ -132,15 +133,25 @@ const UserProfile = async ({ params }) => {
                             </div>
                         </div>
 
-                        {isOwnProfile && (
-                            <Link
-                                href={`/profile/settings`}
-                                className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-gray-950 px-5 text-sm font-semibold text-white shadow-lg shadow-gray-900/15 transition hover:-translate-y-0.5 hover:bg-gray-800"
-                            >
-                                <Settings className="h-4 w-4" />
-                                Settings
-                            </Link>
-                        )}
+                        {/* Right Action Button: Settings if own profile, FollowButton if someone else's profile (and logged in) */}
+                        <div className="flex items-center justify-center">
+                            {isOwnProfile ? (
+                                <Link
+                                    href={`/profile/settings`}
+                                    className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-gray-950 px-5 text-sm font-semibold text-white shadow-lg shadow-gray-900/15 transition hover:-translate-y-0.5 hover:bg-gray-800"
+                                >
+                                    <Settings className="h-4 w-4" />
+                                    Settings
+                                </Link>
+                            ) : currentUser ? (
+                                <FollowButton
+                                    followerUserId={currentUser.id}
+                                    toBeFollowedUserId={displayedUserProfile.id}
+                                    // Pass initialIsFollowing if you have it precomputed from a database relation check
+                                    initialIsFollowing={false}
+                                />
+                            ) : null}
+                        </div>
                     </div>
                 </div>
             </section>
