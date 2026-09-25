@@ -1,5 +1,5 @@
 import React from 'react';
-import { getCurrentUser } from '@/api/userActions';
+import { getCurrentUser, getUserByUserId } from '@/api/userActions';
 import Image from 'next/image';
 import Link from 'next/link';
 import { BadgeCheck, Calendar, Mail, MapPin, Settings, ShieldAlert, User } from 'lucide-react';
@@ -43,11 +43,7 @@ const UserProfile = async ({ params }) => {
     const { userId } = await params;
     const currentUser = await getCurrentUser();
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/profile/getUser/${userId}`, {
-        cache: 'no-store'
-    });
-    const data = await res.json();
-    const displayedUserProfile = data?.user;
+    const displayedUserProfile = await getUserByUserId(userId);
 
     if (!displayedUserProfile) {
         return (

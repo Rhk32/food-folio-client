@@ -28,3 +28,37 @@ export const getCurrentUser = async () => {
         return null;
     }
 };
+
+export const getUserByUserId = async (userId) => {
+    if (!userId) {
+        return null;
+    }
+
+    try {
+        const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/users/profile/getUser/${userId}`,
+            {
+                method: 'GET',
+                cache: 'no-store',
+            }
+        );
+
+        if (!res.ok) {
+            console.error(
+                'Failed to fetch user:',
+                res.status,
+                res.statusText
+            );
+
+            return null;
+        }
+
+        const data = await res.json();
+
+        return data.user ?? null;
+    } catch (error) {
+        console.error('Error fetching user:', error);
+
+        return null;
+    }
+};
