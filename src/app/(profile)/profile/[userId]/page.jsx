@@ -1,8 +1,10 @@
 import React from 'react';
-import { getCurrentUser } from '@/api/userActions';
+import { getCurrentUser, getUserByUserId } from '@/api/userActions';
 import Image from 'next/image';
 import Link from 'next/link';
-import { BadgeCheck, Calendar, Mail, MapPin, Settings, ShieldAlert, User } from 'lucide-react';
+import { BadgeCheck, Calendar, Mail, MapPin, Settings, ShieldAlert, User, Users } from 'lucide-react';
+import FollowButton from '@/components/profile/FollowButton';
+import { isCurrentUserFollowingDisplayedUser, getFollowerCountByUserId } from '@/api/followActions';
 
 const formatJoinedDate = (date) => {
     if (!date) {
@@ -43,11 +45,11 @@ const UserProfile = async ({ params }) => {
     const { userId } = await params;
     const currentUser = await getCurrentUser();
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/profile/getUser/${userId}`, {
-        cache: 'no-store'
-    });
-    const data = await res.json();
-    const displayedUserProfile = data?.user;
+    // Fetch user profile and follower count in parallel for better performance
+    const [displayedUserProfile, followerCount] = await Promise.all([
+        getUserByUserId(userId),
+        getFollowerCountByUserId(userId),
+    ]);
 
     if (!displayedUserProfile) {
         return (
@@ -75,6 +77,11 @@ const UserProfile = async ({ params }) => {
     const locationString = locationParts.join(', ');
     const joinedDate = formatJoinedDate(displayedUserProfile.created_at);
     const joinedSummary = joinedDate === 'Not shared yet' ? 'Joined date not shared' : `Joined ${joinedDate}`;
+
+    // Check if the current logged-in user is following this profile
+    const isFollowing = currentUser && !isOwnProfile
+        ? await isCurrentUserFollowingDisplayedUser(currentUser.id, displayedUserProfile.id)
+        : false;
 
     return (
         <main className="min-h-[calc(100vh-80px)] bg-[#FDFBF7]">
@@ -128,6 +135,11 @@ const UserProfile = async ({ params }) => {
                                         <Calendar className="h-4 w-4 shrink-0 text-sky-600" />
                                         {joinedSummary}
                                     </span>
+                                    {/* Followers Count Badge */}
+                                    <span className="inline-flex items-center gap-2 rounded-full border border-amber-100 bg-white/85 px-3 py-1.5 shadow-sm font-medium text-gray-700">
+                                        <Users className="h-4 w-4 shrink-0 text-amber-500" />
+                                        <span><strong className="text-gray-900">{followerCount ?? 0}</strong> {followerCount === 1 ? 'Follower' : 'Followers'}</span>
+                                    </span>
                                 </div>
 
                                 <p className="max-w-xl text-sm leading-6 text-gray-600">
@@ -136,15 +148,23 @@ const UserProfile = async ({ params }) => {
                             </div>
                         </div>
 
-                        {isOwnProfile && (
-                            <Link
-                                href={`/profile/settings`}
-                                className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-gray-950 px-5 text-sm font-semibold text-white shadow-lg shadow-gray-900/15 transition hover:-translate-y-0.5 hover:bg-gray-800"
-                            >
-                                <Settings className="h-4 w-4" />
-                                Settings
-                            </Link>
-                        )}
+                        {/* Right Action Button: Settings if own profile, FollowButton if someone else's profile (and logged in) */}
+                        <div className="flex items-center justify-center">
+                            {isOwnProfile ? (
+                                <Link
+                                    href={`/profile/settings`}
+                                    className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-gray-950 px-5 text-sm font-semibold text-white shadow-lg shadow-gray-900/15 transition hover:-translate-y-0.5 hover:bg-gray-800"
+                                >
+                                    <Settings className="h-4 w-4" />
+                                    Settings
+                                </Link>
+                            ) : currentUser ? (
+                                <FollowButton
+                                    toBeFollowedUserId={displayedUserProfile.id}
+                                    initialIsFollowing={isFollowing}
+                                />
+                            ) : null}
+                        </div>
                     </div>
                 </div>
             </section>
