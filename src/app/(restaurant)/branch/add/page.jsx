@@ -12,11 +12,7 @@ export default function BranchAddPage() {
     const router = useRouter();
     const restaurantId = searchParams.get('restaurantId');
 
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
+    const { register, handleSubmit, formState: { errors } } = useForm({
         defaultValues: {
             restaurant_id: restaurantId || '',
             branch_name: '',
