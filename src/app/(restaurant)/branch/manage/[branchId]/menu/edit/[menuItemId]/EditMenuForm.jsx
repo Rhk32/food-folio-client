@@ -20,7 +20,12 @@ export default function EditMenuForm({ menuItem }) {
 
     const onSubmit = async (data) => {
         try {
-            await postEditedMenuItem({ id: menuItem.id, branch_id: menuItem.branch_id, ...data, price: parseFloat(data.price) });
+            const result = await postEditedMenuItem({ id: menuItem.id, ...data, price: parseFloat(data.price) });
+
+            if (!result.success) {
+                alert(result.message);
+                return;
+            }
 
             router.push(`/branch/manage/${menuItem.branch_id}/menu`);
             router.refresh();

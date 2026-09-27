@@ -126,5 +126,59 @@ export const getMenuItemByMenuItemId = async (menuItemId) => {
 };
 
 export const postEditedMenuItem = async (data) => {
+    const token = await getToken();
 
+    if (!token) {
+        return {
+            success: false,
+            message: 'Authentication required',
+        };
+    }
+
+    if (!data?.id) {
+        return {
+            success: false,
+            message: 'Menu item ID is required',
+        };
+    }
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menu/${data.id}`,
+            {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: data.name,
+                    description: data.description,
+                    price: data.price,
+                }),
+                cache: 'no-store',
+            }
+        );
+
+        const result = await res.json();
+
+        if (!res.ok) {
+            return {
+                success: false,
+                message: result.message || 'Failed to update menu item',
+            };
+        }
+
+        return {
+            success: true,
+            message: result.message,
+            menuItem: result.menuItem,
+        };
+    } catch (error) {
+        console.error('Error updating menu item:', error);
+
+        return {
+            success: false,
+            message: 'Something went wrong while updating the menu item',
+        };
+    }
 };
