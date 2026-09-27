@@ -92,3 +92,39 @@ export const createMenuItem = async (menuItemData) => {
         };
     }
 };
+
+export const getMenuItemByMenuItemId = async (menuItemId) => {
+    if (!menuItemId) {
+        return null;
+    }
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/menu/item/${menuItemId}`,
+            {
+                method: 'GET',
+                cache: 'no-store',
+            }
+        );
+
+        if (!res.ok) {
+            console.error(
+                'Failed to fetch menu item:',
+                res.status,
+                res.statusText
+            );
+
+            return null;
+        }
+
+        const data = await res.json();
+
+        return data.menuItem ?? null;
+    } catch (error) {
+        console.error('Error fetching menu item:', error);
+        return null;
+    }
+};
+
+export const postEditedMenuItem = async (data) => {
+
+};
