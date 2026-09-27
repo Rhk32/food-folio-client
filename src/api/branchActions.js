@@ -84,3 +84,31 @@ export const createBranch = async (branchData) => {
         };
     }
 };
+
+export const getBranchByBranchId = async (branchId) => {
+    if (!branchId) return null;
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/branch/${branchId}`,
+            {
+                method: 'GET',
+                cache: 'no-store',
+            }
+        );
+
+        if (!res.ok) {
+            console.error(
+                'Failed to fetch branch:',
+                res.status,
+                res.statusText
+            );
+            return null;
+        }
+
+        const data = await res.json();
+        return data.branch ?? null;
+    } catch (error) {
+        console.error('Error fetching branch:', error);
+        return null;
+    }
+};

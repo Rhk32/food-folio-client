@@ -1,4 +1,4 @@
-import { GitBranch, LayoutDashboard, Lock, MessageSquareQuote, Store, User, UtensilsCrossed } from "lucide-react";
+import { GitBranch, LayoutDashboard, Lock, MapPin, MessageSquareQuote, Store, User, UtensilsCrossed } from "lucide-react";
 
 export const getSidebarNavLinks = () => {
     const navItems = [
@@ -49,6 +49,29 @@ export const getRestaurantManagerSidebarItems = (restaurantId) => {
             name: 'Cuisines',
             href: `/manage/${restaurantId}/cuisine`,
             icon: UtensilsCrossed,
+        },
+    ];
+    return navItems;
+};
+
+export const getBranchManagerSidebarItems = (branchId) => {
+    const navItems = [
+        {
+            name: 'Overview',
+            href: `/branch/manage/${branchId}`,
+            icon: LayoutDashboard,
+            exact: true,
+            description: 'Overview (coming later)',
+        },
+        {
+            name: 'Menu',
+            href: `/branch/manage/${branchId}/menu`,
+            icon: UtensilsCrossed,
+        },
+        {
+            name: 'Location',
+            href: `/branch/manage/${branchId}/location`,
+            icon: MapPin,
         },
     ];
     return navItems;
