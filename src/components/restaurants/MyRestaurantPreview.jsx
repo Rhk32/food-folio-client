@@ -1,9 +1,39 @@
-import { Eye } from 'lucide-react';
+import { Eye, Clock, CheckCircle2, XCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 
 const MyRestaurantPreview = ({ restaurant }) => {
+    // Helper to render the appropriate status badge based on restaurant.approval_status
+    const renderApprovalBadge = () => {
+        const status = restaurant.approval_status?.toLowerCase();
+
+        switch (status) {
+            case 'approved':
+                return (
+                    <div className="bg-emerald-500/90 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>Approved</span>
+                    </div>
+                );
+            case 'rejected':
+                return (
+                    <div className="bg-red-500/90 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                        <XCircle className="w-3.5 h-3.5" />
+                        <span>Rejected</span>
+                    </div>
+                );
+            case 'pending':
+            default:
+                return (
+                    <div className="bg-amber-500/90 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                        <Clock className="w-3.5 h-3.5" />
+                        <span>Pending Review</span>
+                    </div>
+                );
+        }
+    };
+
     return (
         <div
             key={restaurant.id}
@@ -18,6 +48,13 @@ const MyRestaurantPreview = ({ restaurant }) => {
                         fill
                         className="object-cover"
                     />
+
+                    {/* Top Left: Approval Status Badge */}
+                    <div className="absolute top-3 left-3">
+                        {renderApprovalBadge()}
+                    </div>
+
+                    {/* Top Right: Visits Badge */}
                     <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md text-white text-xs font-semibold px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
                         <Eye className="w-3.5 h-3.5 text-orange-400" />
                         <span>{restaurant.visits ?? 0} visits</span>
@@ -41,7 +78,7 @@ const MyRestaurantPreview = ({ restaurant }) => {
                     Added: {new Date(restaurant.created_at).toLocaleDateString()}
                 </span>
                 <Link
-                    href={`/restaurants/${restaurant.id}`}
+                    href={`/manage/${restaurant.id}`}
                     className="text-xs font-semibold text-orange-600 hover:text-orange-700 hover:underline"
                 >
                     Manage Spot &rarr;

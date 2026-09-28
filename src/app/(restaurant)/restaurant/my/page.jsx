@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-import { getMyRestaurants } from '@/actions/restaurantActions';
+import { getMyRestaurants } from '@/api/restaurantActions';
 import { PlusCircle, UtensilsCrossed } from 'lucide-react';
 import MyRestaurantPreview from '@/components/restaurants/MyRestaurantPreview';
-import { getCurrentUser } from '@/actions/userActions';
+import { getCurrentUser } from '@/api/userActions';
 import { redirect } from 'next/navigation';
 
 const RestaurantUnderUser = async () => {

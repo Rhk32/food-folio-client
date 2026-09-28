@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
-import { loginUser } from '@/actions/authActions';
+import { loginUser } from '@/api/authActions';
 
 const LoginPage = () => {
     const router = useRouter();

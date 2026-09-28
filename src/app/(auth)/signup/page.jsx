@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { User, Mail, Lock, Image as ImageIcon, MapPin, Globe, ArrowRight, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { signupUser } from '@/actions/authActions';
+import { signupUser } from '@/api/authActions';
 
 const SignUpPage = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);

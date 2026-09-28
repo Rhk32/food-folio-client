@@ -72,3 +72,73 @@ export const createRestaurant = async (data) => {
         return { success: false, message: error.message };
     }
 };
+
+export const getUnapprovedRestaurants = async () => {
+    const token = await getToken();
+
+    if (!token) {
+        return [];
+    }
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/unapproved`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            cache: 'no-store',
+        }
+        );
+
+        // console.log('Response status:', res.status);
+
+        const data = await res.json();
+
+        // console.log('Response data:', data);
+
+        if (!res.ok) {
+            console.error('Failed request:', data);
+            return null;
+        }
+
+        return data.restaurants ?? [];
+    } catch (error) {
+        console.error('Failed to fetch unapproved restaurants:', error);
+        return null;
+    }
+};
+
+export const getRestaurantByRestaurantId = async (restaurantId) => {
+    const token = await getToken();
+
+    if (!token || !restaurantId) {
+        return null;
+    }
+
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/${restaurantId}`,
+            {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                cache: 'no-store',
+            }
+        );
+
+        if (!res.ok) {
+            console.error(
+                'Failed to fetch restaurant:',
+                res.status,
+                res.statusText
+            );
+            return null;
+        }
+
+        const data = await res.json();
+
+        return data.restaurant ?? null;
+    } catch (error) {
+        console.error('Error fetching restaurant:', error);
+        return null;
+    }
+};
