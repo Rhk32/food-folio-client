@@ -64,10 +64,10 @@ const MyRestaurantPreview = ({ restaurant }) => {
                 {/* Restaurant Info */}
                 <div className="p-5 space-y-2">
                     <h3 className="text-lg font-bold text-gray-900 tracking-tight line-clamp-1">
-                        {restaurant.restaurant_name}
+                        {restaurant.name}
                     </h3>
                     <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed">
-                        {restaurant.content || 'No description provided yet.'}
+                        {restaurant.description || 'No description provided yet.'}
                     </p>
                 </div>
             </div>

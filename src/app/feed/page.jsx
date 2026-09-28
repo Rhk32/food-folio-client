@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Loader2, MapPin } from 'lucide-react';
-import { getFeed } from '@/actions/feedActions';
-import { getCurrentUser } from '@/actions/userActions';
+import { getCurrentUser } from '@/api/userActions';
 import MyRestaurantPreview from '@/components/restaurants/MyRestaurantPreview';
 import SearchBar from '@/components/search/SearchBar';
+import { getFeed } from '@/api/feedActions';
 
 export default function FeedPage() {
     const [reviews, setReviews] = useState([]);
@@ -68,6 +68,7 @@ export default function FeedPage() {
             
             fetchFeedData();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location, radius, keyword, page]); 
 
     const observer = useRef();
