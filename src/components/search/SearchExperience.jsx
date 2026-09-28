@@ -8,10 +8,10 @@ import RestaurantSearchCard from './RestaurantSearchCard';
 
 const emptyGroup = { items: [], total: 0, page: 1, limit: 12 };
 
-export default function SearchExperience() {
-    const [query, setQuery] = useState('');
-    const [city, setCity] = useState('');
-    const [cuisineId, setCuisineId] = useState('');
+export default function SearchExperience({ initialQuery = '', initialCity = '', initialCuisineId = '' }) {
+    const [query, setQuery] = useState(initialQuery);
+    const [city, setCity] = useState(initialCity);
+    const [cuisineId, setCuisineId] = useState(initialCuisineId);
     const [filters, setFilters] = useState({ cities: [], cuisines: [] });
     const [results, setResults] = useState({ users: emptyGroup, restaurants: emptyGroup });
     const [loading, setLoading] = useState(true);
@@ -35,7 +35,14 @@ export default function SearchExperience() {
 
     useEffect(() => {
         let active = true;
-        Promise.all([getSearchFilters(), searchFoodFolio()]).then(([filterData, response]) => {
+        Promise.all([
+            getSearchFilters(),
+            searchFoodFolio({
+                query: initialQuery,
+                city: initialCity,
+                cuisineId: initialCuisineId,
+            }),
+        ]).then(([filterData, response]) => {
             if (!active) return;
             setFilters(filterData);
             setResults({ users: response.users, restaurants: response.restaurants });
@@ -43,7 +50,7 @@ export default function SearchExperience() {
             setLoading(false);
         });
         return () => { active = false; };
-    }, []);
+    }, [initialCity, initialCuisineId, initialQuery]);
 
     const submit = (event) => {
         event.preventDefault();
