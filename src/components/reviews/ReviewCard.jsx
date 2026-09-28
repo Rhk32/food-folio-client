@@ -6,7 +6,7 @@ import { MapPin, Star } from 'lucide-react';
 import VouchButton from './VouchButton';
 import CommentSection from './CommentSection';
 
-export default function ReviewCard({ review, isLoggedIn = false }) {
+export default function ReviewCard({ review, isLoggedIn = false, managementAction = null }) {
     return (
         <article className="overflow-hidden rounded-3xl border border-orange-100 bg-white shadow-sm transition-shadow hover:shadow-md">
             <div className="flex items-start justify-between gap-4 p-5 sm:items-center sm:p-7">
@@ -40,6 +40,11 @@ export default function ReviewCard({ review, isLoggedIn = false }) {
                 <Link href={`/restaurant/${review.restaurant.id}`} className="text-lg font-bold text-gray-900 hover:text-orange-600">{review.restaurant.name}</Link>
                 <p className="mt-1.5 flex items-start gap-1.5 text-sm text-gray-500"><MapPin className="mt-0.5 h-4 w-4 shrink-0 text-orange-500" /> <span>{review.branch.name}, {review.branch.city}</span></p>
                 <p className="mt-5 whitespace-pre-wrap text-[15px] leading-7 text-gray-700">{review.content}</p>
+                {managementAction && (
+                    <div className="mt-6 flex justify-end">
+                        {managementAction}
+                    </div>
+                )}
                 <div className="mt-6 grid grid-cols-2 gap-2 border-t border-orange-100 pt-4">
                     <VouchButton reviewId={review.review_id} initialVouched={review.has_vouched} initialCount={review.vouch_count} isLoggedIn={isLoggedIn} />
                     <CommentSection reviewId={review.review_id} initialCount={review.comment_count} isLoggedIn={isLoggedIn} />

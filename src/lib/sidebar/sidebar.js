@@ -41,7 +41,7 @@ export const getRestaurantManagerSidebarItems = (restaurantId) => {
             exact: true, // Used to match exact root manage path
         },
         {
-            name: 'Pending Reviews',
+            name: 'Reviews',
             href: `/manage/${restaurantId}/reviews`,
             icon: MessageSquareQuote,
         },

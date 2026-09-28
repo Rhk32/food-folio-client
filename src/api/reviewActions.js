@@ -102,3 +102,35 @@ export const toggleReviewVouch = async (reviewId) => {
         return { success: false, message: 'Could not update vouch.' };
     }
 };
+
+export const deleteReviewAsManager = async (reviewId) => {
+    try {
+        const token = await getToken();
+        if (!token) {
+            return { success: false, status: 401, message: 'Please log in.' };
+        }
+
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/review/${reviewId}`,
+            {
+                method: 'DELETE',
+                headers: { Authorization: `Bearer ${token}` },
+                cache: 'no-store',
+            }
+        );
+        const data = await response.json();
+
+        if (!response.ok) {
+            return {
+                success: false,
+                status: response.status,
+                message: data.message || 'Could not delete review.',
+            };
+        }
+
+        return { success: true, ...data };
+    } catch (error) {
+        console.error('Delete review failed:', error);
+        return { success: false, status: 500, message: 'Could not delete review.' };
+    }
+};
