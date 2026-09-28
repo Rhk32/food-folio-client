@@ -2,9 +2,11 @@ import React from 'react';
 import { getCurrentUser, getUserByUserId } from '@/api/userActions';
 import Image from 'next/image';
 import Link from 'next/link';
-import { BadgeCheck, Calendar, Mail, MapPin, Settings, ShieldAlert, User, Users } from 'lucide-react';
+import { BadgeCheck, Calendar, MapPin, Settings, ShieldAlert, User, Users } from 'lucide-react';
 import FollowButton from '@/components/profile/FollowButton';
 import { isCurrentUserFollowingDisplayedUser, getFollowerCountByUserId } from '@/api/followActions';
+import { getReviews } from '@/api/reviewActions';
+import ReviewList from '@/components/reviews/ReviewList';
 
 const formatJoinedDate = (date) => {
     if (!date) {
@@ -46,9 +48,10 @@ const UserProfile = async ({ params }) => {
     const currentUser = await getCurrentUser();
 
     // Fetch user profile and follower count in parallel for better performance
-    const [displayedUserProfile, followerCount] = await Promise.all([
+    const [displayedUserProfile, followerCount, reviews] = await Promise.all([
         getUserByUserId(userId),
         getFollowerCountByUserId(userId),
+        getReviews({ userId }),
     ]);
 
     if (!displayedUserProfile) {
@@ -67,8 +70,7 @@ const UserProfile = async ({ params }) => {
     const isOwnProfile = currentUser && String(currentUser.id) === String(displayedUserProfile.id);
 
     const name = getDisplayValue(displayedUserProfile.name, '');
-    const email = getDisplayValue(displayedUserProfile.email, '');
-    const displayName = name || email || 'Foodie';
+    const displayName = name || 'Foodie';
     const initials = getInitials(displayName);
     const bio = getDisplayValue(displayedUserProfile.bio, '');
     const city = getDisplayValue(displayedUserProfile.current_city, '');
@@ -121,12 +123,6 @@ const UserProfile = async ({ params }) => {
                                 </div>
 
                                 <div className="flex flex-wrap justify-center gap-2 text-sm text-gray-600 sm:justify-start">
-                                    {email && (
-                                        <span className="inline-flex max-w-full items-center gap-2 rounded-full border border-orange-100 bg-white/85 px-3 py-1.5 shadow-sm">
-                                            <Mail className="h-4 w-4 shrink-0 text-orange-500" />
-                                            <span className="truncate">{email}</span>
-                                        </span>
-                                    )}
                                     <span className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-white/85 px-3 py-1.5 shadow-sm">
                                         <MapPin className="h-4 w-4 shrink-0 text-emerald-600" />
                                         {locationString || 'Location not shared'}
@@ -167,6 +163,10 @@ const UserProfile = async ({ params }) => {
                         </div>
                     </div>
                 </div>
+            </section>
+            <section className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
+                <h2 className="mb-5 text-2xl font-black text-gray-900">Reviews by {displayName}</h2>
+                <ReviewList initialData={reviews} userId={userId} isLoggedIn={Boolean(currentUser)} emptyMessage="This foodie has not shared a review yet." />
             </section>
         </main>
     );

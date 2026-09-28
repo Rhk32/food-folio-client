@@ -142,3 +142,21 @@ export const getRestaurantByRestaurantId = async (restaurantId) => {
         return null;
     }
 };
+
+export const getPublicRestaurantById = async (restaurantId) => {
+    if (!restaurantId) return null;
+
+    try {
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/api/restaurant/public/${restaurantId}`,
+            { cache: 'no-store' }
+        );
+
+        if (!response.ok) return null;
+        const data = await response.json();
+        return data.restaurant ?? null;
+    } catch (error) {
+        console.error('Failed to fetch public restaurant:', error);
+        return null;
+    }
+};

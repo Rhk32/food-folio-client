@@ -19,39 +19,24 @@ const SignUpPage = () => {
         setIsSubmitting(true);
         setErrorMessage('');
 
-        if (!navigator.geolocation) {
-            setErrorMessage('Geolocation is not supported by your browser');
-            setIsSubmitting(false);
-            return;
-        }
+        const createAccount = async (latitude = null, longitude = null) => {
+            try {
+                const result = await signupUser({ ...userData, latitude, longitude });
 
-        navigator.geolocation.getCurrentPosition(
-            async (position) => {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-
-                try {
-                    const result = await signupUser({
-                        ...userData,
-                        latitude,
-                        longitude
-                    });
-
-                    if (!result.success) {
-                        throw new Error(result.message);
-                    }
-
-                    router.push('/login');
-                } catch (error) {
-                    setErrorMessage(error.message);
-                } finally {
-                    setIsSubmitting(false);
-                }
-            },
-            (error) => {
-                setErrorMessage('Unable to retrieve your location. Please allow location permissions.');
+                if (!result.success) throw new Error(result.message);
+                router.push('/login');
+            } catch (error) {
+                setErrorMessage(error.message);
+            } finally {
                 setIsSubmitting(false);
             }
+        };
+
+        if (!navigator.geolocation) return createAccount();
+
+        navigator.geolocation.getCurrentPosition(
+            (position) => createAccount(position.coords.latitude, position.coords.longitude),
+            () => createAccount()
         );
     };
 

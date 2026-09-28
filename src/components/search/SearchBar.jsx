@@ -13,13 +13,13 @@ export default function SearchBar({ onSearch, placeholder = "Search for food spo
     };
 
     return (
-        <form onSubmit={handleSubmit} className="relative w-full mb-6">
+        <form onSubmit={handleSubmit} className="relative w-full">
             <input
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder={placeholder}
-                className="w-full pl-10 pr-4 py-3 border border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-sm"
+                className="w-full rounded-xl border border-orange-200 py-3 pl-10 pr-4 text-sm shadow-sm outline-none focus:ring-2 focus:ring-orange-500"
             />
             <Search className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
             <button type="submit" className="hidden">Search</button>

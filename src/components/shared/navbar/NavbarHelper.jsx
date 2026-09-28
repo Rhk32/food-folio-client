@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Rss, User, Search, LayoutDashboard, LogIn, LogOut, ShieldAlert } from 'lucide-react';
+import { Menu, X, Rss, User, Search, LayoutDashboard, LogIn, LogOut, ShieldAlert, PenLine } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { logOut } from '@/api/authActions';
 
@@ -101,6 +101,10 @@ export default function NavbarHelper({ user }) {
                         {/* Show these only when logged in */}
                         {isLoggedIn && (
                             <>
+                                <Link href="/review/create" className={getNavLinkClass('/review/create')}>
+                                    <PenLine className="w-4 h-4 text-orange-500" />
+                                    Create Review
+                                </Link>
                                 <Link href="/restaurant/my" className={getNavLinkClass('/restaurant/my')}>
                                     <LayoutDashboard className="w-4 h-4 text-orange-500" />
                                     My Restaurants
@@ -202,6 +206,14 @@ export default function NavbarHelper({ user }) {
                     {/* Show these only when logged in on mobile */}
                     {isLoggedIn && (
                         <>
+                            <Link
+                                href="/review/create"
+                                onClick={() => setIsOpen(false)}
+                                className={getMobileLinkClass('/review/create')}
+                            >
+                                <PenLine className="w-5 h-5 text-orange-500" />
+                                Create Review
+                            </Link>
                             <Link
                                 href="/restaurant/my"
                                 onClick={() => setIsOpen(false)}
