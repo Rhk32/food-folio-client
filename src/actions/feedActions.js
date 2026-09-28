@@ -1,9 +1,9 @@
 'use server';
 
-export const getFeed = async (lat, lng, city, country, radius) => {
+export const getFeed = async (lat, lng, city, country, radius, keyword, page = 1) => {
     try {
 
-        let url = `${process.env.NEXT_PUBLIC_API_URL}/api/feed?`;
+        let url = `${process.env.NEXT_PUBLIC_API_URL}/api/feed?page=${page}`;
 
         if (lat && lng) 
         {
@@ -23,6 +23,11 @@ export const getFeed = async (lat, lng, city, country, radius) => {
             url += `&radius=${radius}`;
         }
 
+        if (keyword) 
+        {
+            url += `&search=${keyword}`;
+        }
+
         // backend request
         const res = await fetch
         (url, 
@@ -38,7 +43,7 @@ export const getFeed = async (lat, lng, city, country, radius) => {
         }
 
         const result = await res.json();
-        return result.data || [];
+        return result;
 
     } catch (error) {
         console.error('Failed to fetch feed:', error);
